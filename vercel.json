@@ -1,0 +1,6 @@
+{
+    "build": {
+      "includeFiles": ["public/data.csv"]
+    }
+  }
+  

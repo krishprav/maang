@@ -1,26 +1,122 @@
+/* app/globals.css */
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Base Colors */
+  --color-background: #121212; /* #121212 */
+  --color-foreground: #EAEAEA; /* #EAEAEA */
+  --color-surface: #1E1E1E; /* #1E1E1E */
+  
+  /* Accent Colors */
+  --color-primary: #00A8E8; /* #00A8E8 Neon Blue */
+  --color-secondary: #8A2BE2; /* #8A2BE2 Cyber Purple */
+  --color-success: #00FF99; /* #00FF99 Electric Green */
+  --color-destructive: #FF4C4C; /* #FF4C4C Bright Red */
+  
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  
+  /* Borders */
+  --border: rgba(255, 255, 255, 0.2);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+      'Helvetica Neue', Arial, sans-serif;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  code, pre {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-feature-settings: 'calt' 1;
+  }
+
+  /* If you need to force JetBrains Mono in specific elements */
+  .font-mono {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Glassmorphism Components */
+@layer components {
+  .glass {
+    @apply backdrop-blur-[10px] bg-[var(--glass-bg)] border border-[var(--glass-border)];
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37),
+                inset 0 4px 8px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .glass-button {
+    @apply bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] transition-all;
+    &:hover {
+      @apply bg-[rgba(255,255,255,0.15)] border-[rgba(255,255,255,0.2)];
+    }
+  }
+
+  .glass-input {
+    @apply bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] focus:ring-2 focus:ring-primary;
+    @apply text-white placeholder-gray-400 transition-all duration-300;
+    
+    &:hover {
+      @apply shadow-[0_0_15px_rgba(255,255,255,0.1)];
+    }
+    
+    &:focus {
+      @apply shadow-[0_0_25px_rgba(255,255,255,0.15)] ring-2 ring-primary/50;
+      animation: input-glow 1.5s ease-in-out infinite alternate;
+    }
+  }
+}
+
+/* Component-specific overrides */
+.prose pre {
+  @apply bg-surface backdrop-blur-[10px] border border-[var(--border)];
+}
+
+.MacOSWindow {
+  @apply bg-[rgba(30,30,30,0.8)] backdrop-blur-[10px] border border-[var(--border)];
+}
+
+.ComplexityTable {
+  @apply bg-[rgba(30,30,30,0.6)] backdrop-blur-[8px];
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  @apply w-2;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-primary/30 rounded-full;
+}
+
+.scrollbar-custom::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  @apply bg-primary/30 rounded-full;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+/* Keyframes for input glow animation */
+@keyframes input-glow {
+  from {
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.05),
+                inset 0 0 5px rgba(255, 255, 255, 0.05);
+  }
+  to {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15),
+                inset 0 0 10px rgba(255, 255, 255, 0.1);
+  }
+}
+
+@layer utilities {
+  .grid-cols-12 {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
 }
