@@ -1,13 +1,19 @@
-//app/components/ui/CopyButton.tsx
-"use client";
-import { useState } from "react";
+// app/components/ui/CopyButton.tsx
+"use client"
+import { useState } from 'react';
+import { FiCopy, FiCheck } from 'react-icons/fi';
+
 interface CopyButtonProps {
   content: string;
+  className?: string;
   small?: boolean;
-  className?: string; 
 }
 
-export const CopyButton: React.FC<CopyButtonProps> = ({ content, small = false, className = '' }) => {
+export const CopyButton = ({ 
+  content, 
+  className,
+  small = false
+}: CopyButtonProps) => {
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = async () => {
@@ -16,14 +22,22 @@ export const CopyButton: React.FC<CopyButtonProps> = ({ content, small = false, 
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const iconSize = small ? 'w-3.5 h-3.5' : 'w-4 h-4';
+  const buttonSize = small ? 'p-1.5' : 'p-2';
+
   return (
     <button
       onClick={copyToClipboard}
-      className={`glass-button flex items-center gap-1 ${
-        small ? 'px-2 py-1 text-sm' : 'px-3 py-1.5'
-      } ${className}`} 
+      className={`rounded-lg hover:bg-[#00A8E8]/20 transition-colors ${buttonSize} ${
+        className || ''
+      }`}
+      aria-label={copied ? "Copied!" : "Copy to clipboard"}
     >
-      {copied ? '✓ Copied' : '📋 Copy'}
+      {copied ? (
+        <FiCheck className={`${iconSize} text-green-500`} />
+      ) : (
+        <FiCopy className={`${iconSize} text-[#EAEAEA]/60 hover:text-[#00A8E8]`} />
+      )}
     </button>
   );
 };

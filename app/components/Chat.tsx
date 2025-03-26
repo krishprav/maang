@@ -20,6 +20,7 @@ export default function Chat() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [selectedLanguage, setSelectedLanguage] = useState('JavaScript');
 
   const scrollToBottom = () => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
 
@@ -34,12 +35,12 @@ export default function Chat() {
     setIsLoading(true);
 
     try {
-      const response = await getAIResponse(input);
+      const response = await getAIResponse(input, selectedLanguage);
       setMessages(prev => [...prev, { content: response, isUser: false }]);
     } catch {
-      setMessages(prev => [...prev, { 
-        content: "⚠️ Failed to get response. Please try again.", 
-        isUser: false 
+      setMessages(prev => [...prev, {
+        content: "⚠️ Failed to get response. Please try again.",
+        isUser: false
       }]);
     } finally {
       setIsLoading(false);
@@ -49,8 +50,17 @@ export default function Chat() {
   return (
     <div className="flex flex-col h-[100dvh] bg-gradient-to-br from-gray-900 to-gray-800">
       <header className="glass-pane p-4 m-4">
-        <h1 className="text-gradient text-2xl font-bold">FAANG AI Mentor</h1>
+        <h1 className="text-gradient text-2xl font-bold">AI Mentor</h1>
         <p className="text-gray-400 mt-1">Your personal interview preparation assistant</p>
+        <select
+          value={selectedLanguage}
+          onChange={(e) => setSelectedLanguage(e.target.value)}
+          className="mt-2 bg-gray-800/50 rounded p-2 text-sm text-white"
+        >
+          <option value="JavaScript">JavaScript</option>
+          <option value="Python">Python</option>
+          <option value="C++">C++</option>
+        </select>
       </header>
 
       <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-4">
@@ -67,14 +77,14 @@ export default function Chat() {
                 {message.isUser ? (
                   <p className="text-gray-100">{message.content}</p>
                 ) : (
-<div className="markdown">
-  <ReactMarkdown
-    remarkPlugins={[remarkGfm]}
-    rehypePlugins={[rehypeHighlight]}
-  >
-    {message.content}
-  </ReactMarkdown>
-</div>
+                  <div className="markdown">
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
+                      rehypePlugins={[rehypeHighlight]}
+                    >
+                      {message.content}
+                    </ReactMarkdown>
+                  </div>
 
                 )}
               </div>
@@ -83,18 +93,18 @@ export default function Chat() {
         </AnimatePresence>
 
         {isLoading && (
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    className="glass-pane p-4 max-w-3xl w-fit"
-  >
-    <div className="flex space-x-2">
-      <div className="w-2 h-2 bg-primary rounded-full animate-bounce" />
-      <div className="w-2 h-2 bg-primary rounded-full animate-bounce delay-100" />
-      <div className="w-2 h-2 bg-primary rounded-full animate-bounce delay-200" />
-    </div>
-  </motion.div>
-)}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="glass-pane p-4 max-w-3xl w-fit"
+          >
+            <div className="flex space-x-2">
+              <div className="w-2 h-2 bg-primary rounded-full animate-bounce" />
+              <div className="w-2 h-2 bg-primary rounded-full animate-bounce delay-100" />
+              <div className="w-2 h-2 bg-primary rounded-full animate-bounce delay-200" />
+            </div>
+          </motion.div>
+        )}
         <div ref={messagesEndRef} />
       </div>
 

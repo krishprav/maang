@@ -1,43 +1,51 @@
-//app/about/page.tsx
+// app/about/page.tsx
 import React from "react";
-import { Navigation } from "../components/Navigation";
 import { GlassCard } from "../components/ui/Glass";
+import { FiAlertTriangle } from "react-icons/fi";
 
 export default function About() {
   return (
-    <main className="flex min-h-screen flex-col items-center">
-      <Navigation />
-
-      {/* Background effects */}
-      <div className="fixed inset-0 z-[-1]">
-        <div className="absolute top-20 left-20 bg-accent/20 w-72 h-72 rounded-full filter blur-3xl" />
-        <div className="absolute bottom-20 right-20 bg-primary/20 w-72 h-72 rounded-full filter blur-3xl" />
-      </div>
-
-      <div className="container mx-auto px-4 py-10 max-w-4xl">
-        <GlassCard className="mb-10">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+    <main className="flex min-h-screen flex-col items-center bg-gradient-to-br from-gray-900 to-gray-950">
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
+        <GlassCard className="p-6 bg-gray-900/50 backdrop-blur-lg border border-white/10 rounded-xl shadow-xl">
+          <h1 className="text-3xl font-bold text-white mb-4">
             About AI Mentor
           </h1>
-          <div className="text-gray-200 space-y-4 mt-4">
-            <p>
-              AI Mentor is designed to help software engineers prepare for technical interviews at 
-              top tech companies like FAANG (Facebook/Meta, Amazon, Apple, Netflix, Google).
-            </p>
-            <p>
-              Our platform leverages advanced AI to provide structured, detailed responses to your coding 
-              and interview preparation questions, following the same format used by actual technical 
-              interviewers at these companies.
-            </p>
-            <h2 className="text-2xl font-bold text-white mt-6">Features</h2>
-            <ul className="list-disc pl-5 space-y-2">
-              <li>Structured responses with clear problem statements</li>
-              <li>Multiple solution approaches from brute force to optimal</li>
-              <li>Detailed code explanations with comments</li>
-              <li>Time and space complexity analysis</li>
-              <li>Pattern matching with similar problems</li>
-              <li>Follow-up problems to practice similar concepts</li>
-            </ul>
+          
+          <div className="text-gray-200 space-y-6">
+            <div className="p-4 bg-red-900/20 backdrop-blur-sm rounded-lg border border-red-400/20">
+              <div className="flex items-center gap-2 mb-2">
+                <FiAlertTriangle className="w-5 h-5 text-red-300" />
+                <h2 className="text-lg font-semibold text-red-100">Important Disclaimer</h2>
+              </div>
+              <p className="text-red-200 text-sm leading-relaxed">
+                While AI Mentor strives to provide accurate and helpful information,
+                please be aware that artificial intelligence systems can sometimes
+                make mistakes. All responses should be verified through additional
+                resources and human review.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <h2 className="text-xl font-semibold text-white">Key Features</h2>
+              <ul className="list-disc pl-5 space-y-2 text-gray-300">
+                <li>Interactive DSA problem solving with multiple approaches</li>
+                <li>Code review and optimization suggestions</li>
+                <li>System design interview preparation</li>
+                <li>Real-time complexity analysis</li>
+                <li>Personalized interview simulations</li>
+              </ul>
+            </div>
+
+            <div className="space-y-4">
+              <h2 className="text-xl font-semibold text-white">Our Approach</h2>
+              <ul className="list-decimal pl-5 space-y-2 text-gray-300">
+                <li>Pattern recognition for common interview questions</li>
+                <li>Adaptive difficulty scaling</li>
+                <li>Context-aware feedback generation</li>
+                <li>Real-world system design scenarios</li>
+              </ul>
+            </div>
           </div>
         </GlassCard>
       </div>

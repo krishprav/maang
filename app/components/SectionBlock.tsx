@@ -53,8 +53,7 @@ export const SectionBlock: React.FC<SectionBlockProps> = ({
               <div dangerouslySetInnerHTML={{ __html: section.htmlContent }} />
               <CopyButton 
                 content={section.rawContent} 
-                small 
-                className="mt-4" 
+                className="mt-4 text-xs p-1" 
               />
             </div>
           )}

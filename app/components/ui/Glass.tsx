@@ -1,4 +1,4 @@
-//app/components/ui/Glass.tsx
+// app/components/ui/Glass.tsx
 import React from "react";
 import { ClipLoader } from 'react-spinners';
 
@@ -11,12 +11,11 @@ interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
 export const GlassCard: React.FC<GlassCardProps> = ({ 
   children, 
   className = "", 
-  glow = false,
   ...props 
 }) => {
   return (
     <div 
-      className={`glass rounded-xl p-6 ${glow ? "glow" : ""} ${className}`}
+      className={`backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl shadow-xl ${className}`}
       {...props}
     >
       {children}
@@ -27,23 +26,25 @@ export const GlassCard: React.FC<GlassCardProps> = ({
 interface GlassButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   className?: string;
-  glow?: boolean;
   as?: React.ElementType;
+  glow?: boolean; // Change from string to boolean
 }
 
 export const GlassButton: React.FC<GlassButtonProps> = ({
   children,
   className = "",
-  glow = false,
   disabled = false,
+  glow = false, // Default to false
   as: Component = "button",
   ...props
 }) => {
   return (
     <Component
-      className={`glass-button px-6 py-2 text-white font-medium transition-all 
-        ${disabled ? "opacity-50 cursor-not-allowed" : "hover:scale-105"} 
-        ${glow ? "glow" : ""} 
+      className={`px-4 py-2 rounded-xl transition-all
+        bg-white/5 border border-white/10 
+        hover:bg-white/10 hover:border-white/20
+        ${glow ? "shadow-[0_0_10px_-2px_rgba(59,130,246,0.5)]" : ""}
+        ${disabled ? "opacity-50 cursor-not-allowed" : ""} 
         ${className}`}
       disabled={disabled}
       {...props}
@@ -77,6 +78,11 @@ export const GlassInput: React.FC<GlassInputProps> = ({
   multiline = false,
   rows = 4
 }) => {
+  const baseStyles = `w-full px-4 py-2 rounded-xl transition-all
+    backdrop-blur-lg bg-white/5 border border-white/10 
+    focus:outline-none focus:ring-2 focus:ring-primary/50
+    placeholder-gray-400 text-white ${className}`;
+
   if (multiline) {
     return (
       <textarea
@@ -84,8 +90,7 @@ export const GlassInput: React.FC<GlassInputProps> = ({
         value={value}
         onChange={onChange}
         rows={rows}
-        className={`glass-input px-4 py-3 w-full focus:outline-none focus:ring-2 
-        focus:ring-primary focus:border-transparent transition-all ${className}`}
+        className={baseStyles}
       />
     );
   }
@@ -96,8 +101,7 @@ export const GlassInput: React.FC<GlassInputProps> = ({
       placeholder={placeholder}
       value={value}
       onChange={onChange}
-      className={`glass-input px-4 py-3 w-full focus:outline-none focus:ring-2 
-      focus:ring-primary focus:border-transparent transition-all ${className}`}
+      className={baseStyles}
     />
   );
 };
@@ -108,6 +112,6 @@ interface GlassDividerProps {
 
 export const GlassDivider: React.FC<GlassDividerProps> = ({ className = "" }) => {
   return (
-    <div className={`h-px bg-gradient-to-r from-transparent via-white/20 to-transparent my-4 ${className}`} />
+    <div className={`h-px bg-white/10 my-4 ${className}`} />
   );
 };

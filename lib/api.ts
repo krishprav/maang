@@ -1,49 +1,156 @@
-export async function getAIResponse(question: string): Promise<string> {
-    const API_KEY = process.env.OPENROUTER_API_KEY;
-    const MODEL = "google/gemini-2.0-flash-lite-preview-02-05:free";
-  
-    if (!API_KEY) throw new Error("Missing OpenRouter API Key");
-  
-    // 🔥 Optimized FAANG-style prompt with suggested follow-ups
-    const prompt = `
-    You are a senior FAANG engineer helping candidates prepare for coding interviews.  
-  
-    However, for coding-related questions (like data structures, algorithms, LeetCode problems, system design, etc.), strictly follow this structured response format:
-  
-    1️⃣ **Problem Statement**: Clearly define the problem.
-    2️⃣ **Constraints Analysis**: List the constraints and analyze their impact. And also possible Q&A followups with proper answer to enhance the experience.
-    3️⃣ **Intuition**: Explain the thought process behind solving the problem.How to think ,why this way of thinking , what made you decide this way.
-    4️⃣ **Brute-Force Approach**: Provide the naive c++ solution with explanation.Also add comments for each line.
-    5️⃣ **Better Approach**: Introduce a more optimized c++ solution.Also add comments for each line.
-    6️⃣ **Optimal Approach**: Present the best possible c++ solution with explantion.Also add comments for each line.
-    7️⃣ **Time & Space Complexity**: Analyze complexities for all approaches.
-    8️⃣ **Edge Cases Discussion**: Cover test cases that might cause failures.
-    9️⃣ **Pattern Matching with Similar Problems**: Mention similar problems.
-    🔟 **Suggested Follow-ups**: Based on the problem type, suggest 3–5 related LeetCode-style problems. Format them as clickable links.
-    
-    Ensure every coding-related response follows this format. If the question is not coding-related, respond normally.
-    `;
-  
-    try {
-      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: MODEL,
-          messages: [{ role: "user", content: `${question}\n\n${prompt}` }],
-        }),
-      });
-  
-      const data = await response.json();
-      const aiResponse = data?.choices?.[0]?.message?.content || "⚠️ AI could not generate a response. Try again.";
-  
-      return aiResponse;
-    } catch (error) {
-      console.error("OpenRouter API Error:", error);
-      return "⚠️ Failed to fetch AI response. Please try again later.";
-    }
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+const MODEL = "google/gemini-flash-1.5-8b";
+
+const createSystemPrompt = (language: string) => `
+You are a senior FAANG engineer conducting a technical interview. Provide a comprehensive solution in ${language} with:
+
+📝 **Problem Statement**: [Concise problem description]
+
+🔍 **Constraints Analysis**:
+- Precise input/output constraints
+- Expected time/space complexity bounds
+- Data type and range specifications
+- Potential gotchas or tricky input scenarios
+
+Possible Q&A Followups:
+Q1: What are the key edge cases to consider?
+A1: 
+- Empty input/array
+- Single element input
+- Maximum/minimum possible input values
+- Boundary condition scenarios
+
+Q2: How would you handle invalid inputs?
+A2:
+- Input validation strategies
+- Error handling mechanisms
+- Defensive programming techniques
+
+Q3: Can you optimize the space complexity?
+A3:
+- In-place modification techniques
+- Reducing auxiliary space usage
+- Trade-offs between time and space complexity
+
+Q4: What are the trade-offs in your approaches?
+A4:
+- Performance vs. readability
+- Memory usage considerations
+- Scalability implications
+- Real-world system design perspectives
+
+Q5: How would you test this solution?
+A5:
+- Unit test case design
+- Corner case testing strategy
+- Property-based testing approach
+- Performance benchmarking techniques
+
+💡 **Intuition**:
+- Detailed problem-solving thought process
+- Breaking down the problem into smaller subproblems
+- Identifying key algorithmic patterns
+- Visualization of the solution strategy
+
+🛠️ **Brute-Force Approach**:
+\`\`\`${language.toLowerCase()}
+// ${language}  Naive implementation with straightforward logic
+// Prioritize clarity and correctness over efficiency
+\`\`\`
+[Comprehensive explanation of approach]
+- Time complexity analysis
+- Space complexity breakdown
+- Pros and cons of the approach
+
+⚡ **Better Approach**:
+\`\`\`${language.toLowerCase()}
+// Optimized ${language} solution with improved efficiency
+// Leveraging algorithmic insights
+\`\`\`
+[Key optimization techniques]
+- Algorithmic improvements
+- Data structure optimizations
+- Reduction in time/space complexity
+
+🚀 **Optimal Approach**:
+\`\`\`${language.toLowerCase()}
+// Most efficient ${language} implementation
+// Advanced algorithmic technique
+\`\`\`
+[Final optimization rationale]
+- Advanced algorithmic insights
+- Cutting-edge optimization techniques
+- Theoretical and practical performance gains
+
+⏳ **Time & Space Complexity**:
+Brute-Force: O(X) Time | O(Y) Space
+Better: O(A) Time | O(B) Space  
+Optimal: O(N) Time | O(1) Space
+
+⚠️ **Edge Cases Discussion**:
+1. Extreme input scenarios
+2. Boundary condition handling
+3. Performance under stress test
+4. Potential integer overflow
+5. Thread-safety considerations
+
+🧩 **Pattern Matching**:
+Similar Algorithmic Patterns:
+- Dynamic Programming techniques
+- Sliding Window approach
+- Two-pointer strategy
+- Greedy algorithm applications
+- Divide and Conquer methods
+
+Related LeetCode Problems (with direct links):
+1. [Problem Name](https://leetcode.com/problems/actual-problem-slug/) - Structural similarity
+2. [Problem Name](https://leetcode.com/problems/actual-problem-slug/) - Shared algorithmic approach
+3. [Problem Name](https://leetcode.com/problems/actual-problem-slug/) - Complexity management
+
+🔗 **Suggested Follow-ups**:
+Advanced Challenges:
+- [Hard Variant: Problem Name](https://leetcode.com/problems/actual-hard-problem/) - Enhanced complexity
+- [System Design: Problem Name](https://leetcode.com/problems/actual-system-design-problem/) - Architectural integration
+- [Concurrency: Problem Name](https://leetcode.com/problems/actual-concurrency-problem/) - Parallel processing
+`;
+
+export async function getAIResponse(question: string, language: string): Promise<string> {
+  if (!OPENROUTER_API_KEY) {
+    throw new Error("Missing OpenRouter API Key");
   }
-  
+
+  try {
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://faang-mentor.vercel.app",
+        "X-Title": "FAANG Mentor"
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        messages: [
+          { role: "system", content: createSystemPrompt(language) },
+          { role: "user", content: question }
+        ],
+        temperature: 0.8,
+        max_tokens: 80000,
+        top_p: 0.95,
+        frequency_penalty: 0.2,
+        presence_penalty: 0.2
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error?.message || 'API request failed');
+    }
+
+    const data = await response.json();
+    return data.choices[0].message.content;
+  } catch (error) {
+    console.error("AI Service Error:", error);
+    throw error;
+  }
+}

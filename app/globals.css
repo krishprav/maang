@@ -1,122 +1,99 @@
 /* app/globals.css */
 @import "tailwindcss";
-@import "tw-animate-css";
 
 @theme {
-  /* Base Colors */
-  --color-background: #121212; /* #121212 */
-  --color-foreground: #EAEAEA; /* #EAEAEA */
-  --color-surface: #1E1E1E; /* #1E1E1E */
+  /* Attention-Optimized Dark Theme */
+  --color-background: #121212;        /* Deep neutral for reduced eye strain */
+  --color-foreground: #E8E8E8;        /* Soft white for better readability */
+  --color-surface: #1E1E1E;           /* Elevated surfaces with subtle contrast */
   
-  /* Accent Colors */
-  --color-primary: #00A8E8; /* #00A8E8 Neon Blue */
-  --color-secondary: #8A2BE2; /* #8A2BE2 Cyber Purple */
-  --color-success: #00FF99; /* #00FF99 Electric Green */
-  --color-destructive: #FF4C4C; /* #FF4C4C Bright Red */
+  /* Focus-Driven Accents */
+  --color-primary: #FFB74D;           /* Warm amber for focal points (psychologically attention-grabbing) */
+  --color-secondary: #64B5F6;         /* Calming blue for secondary actions */
+  --color-success: #81C784;           /* Softer green for positive feedback */
+  --color-destructive: #E57373;       /* Desaturated red for errors */
   
-  /* Glassmorphism */
-  --glass-bg: rgba(255, 255, 255, 0.1);
-  --glass-border: rgba(255, 255, 255, 0.2);
+  /* Cognitive-Friendly Code Colors */
+  --color-code-bg: #2A2A2A;           /* Optimal contrast for code blocks */
+  --color-code-border: #373737;       /* Subtle border definition */
   
-  /* Borders */
-  --border: rgba(255, 255, 255, 0.2);
+  /* New Additions */
+  --color-accent: #A5D6A7;            /* Soft green for highlights */
+  --color-neutral: #757575;           /* Universal gray for disabled states */
 }
 
 @layer base {
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-      'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Inter', system-ui, sans-serif;
   }
 
   code, pre {
-    font-family: 'JetBrains Mono', 'Fira Code', monospace;
-    font-feature-settings: 'calt' 1;
+    font-family: 'JetBrains Mono', monospace;
+    @apply border-code-border rounded-md p-2;
   }
 
-  /* If you need to force JetBrains Mono in specific elements */
-  .font-mono {
-    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  h1, h2, h3 {
+    @apply text-primary font-semibold tracking-tight;
   }
 }
 
-/* Glassmorphism Components */
 @layer components {
-  .glass {
-    @apply backdrop-blur-[10px] bg-[var(--glass-bg)] border border-[var(--glass-border)];
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37),
-                inset 0 4px 8px 0 rgba(255, 255, 255, 0.05);
+  .card {
+    @apply bg-surface rounded-xl p-6 shadow-sm transition-all 
+           hover:shadow-md border border-surface;
   }
 
-  .glass-button {
-    @apply bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] transition-all;
-    &:hover {
-      @apply bg-[rgba(255,255,255,0.15)] border-[rgba(255,255,255,0.2)];
-    }
+  .button {
+    @apply bg-primary text-background px-6 py-3 rounded-lg
+           hover:bg-[#FFA726] transition-colors font-medium
+           focus:ring-4 focus:ring-primary/30 focus:outline-none;
   }
 
-  .glass-input {
-    @apply bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] focus:ring-2 focus:ring-primary;
-    @apply text-white placeholder-gray-400 transition-all duration-300;
-    
-    &:hover {
-      @apply shadow-[0_0_15px_rgba(255,255,255,0.1)];
-    }
-    
-    &:focus {
-      @apply shadow-[0_0_25px_rgba(255,255,255,0.15)] ring-2 ring-primary/50;
-      animation: input-glow 1.5s ease-in-out infinite alternate;
-    }
+  .button-secondary {
+    @apply bg-secondary/10 text-secondary px-6 py-3 rounded-lg
+           hover:bg-secondary/20 transition-colors font-medium
+           border border-secondary/30;
+  }
+
+  .input {
+    @apply bg-surface/50 border border-code-border px-4 py-3 rounded-lg
+           focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20
+           placeholder-neutral/70;
   }
 }
 
-/* Component-specific overrides */
-.prose pre {
-  @apply bg-surface backdrop-blur-[10px] border border-[var(--border)];
-}
-
-.MacOSWindow {
-  @apply bg-[rgba(30,30,30,0.8)] backdrop-blur-[10px] border border-[var(--border)];
-}
-
-.ComplexityTable {
-  @apply bg-[rgba(30,30,30,0.6)] backdrop-blur-[8px];
-}
-
-/* Scrollbar Styling */
+/* Subtle Scrollbar */
 ::-webkit-scrollbar {
-  @apply w-2;
-}
-::-webkit-scrollbar-thumb {
-  @apply bg-primary/30 rounded-full;
-}
-
-.scrollbar-custom::-webkit-scrollbar {
   width: 6px;
 }
 
-.scrollbar-custom::-webkit-scrollbar-thumb {
-  @apply bg-primary/30 rounded-full;
+::-webkit-scrollbar-thumb {
+  @apply bg-neutral/50 rounded-full hover:bg-neutral/60;
 }
 
-.scrollbar-custom::-webkit-scrollbar-track {
-  @apply bg-transparent;
+::-webkit-scrollbar-track {
+  @apply bg-surface;
 }
 
-/* Keyframes for input glow animation */
-@keyframes input-glow {
-  from {
-    box-shadow: 0 0 5px rgba(255, 255, 255, 0.05),
-                inset 0 0 5px rgba(255, 255, 255, 0.05);
-  }
-  to {
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15),
-                inset 0 0 10px rgba(255, 255, 255, 0.1);
-  }
+@keyframes progress {
+  from { width: 0; }
+  to { width: 100%; }
 }
 
-@layer utilities {
-  .grid-cols-12 {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-  }
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-progress {
+  animation: progress 2s ease-in-out infinite alternate;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.drop-shadow-glow {
+  filter: drop-shadow(0 0 8px rgba(192, 132, 252, 0.2));
 }

@@ -1,16 +1,30 @@
 |-- .env.local
 |-- .gitignore
+|-- .hintrc
 |-- app
     |-- about
         |-- page.tsx
     |-- actions.ts
     |-- api
+        |-- ai-search
+            |-- route.ts
         |-- chat
             |-- route.ts
+        |-- code-review
+            |-- route.ts
+        |-- olympic-chat
+            |-- route.ts
+    |-- chat
+        |-- page.tsx
+    |-- code-review
+        |-- page.tsx
     |-- components
         |-- AIResponse.tsx
         |-- Chat.tsx
+        |-- ChatBot.tsx
         |-- CodeExplanation.tsx
+        |-- CodeHighlight.tsx
+        |-- CodeLineExplanation.tsx
         |-- Companies.tsx
         |-- CompanySelector.tsx
         |-- ErrorBoundary.tsx
@@ -30,6 +44,7 @@
     |-- globals.css
     |-- interview-prep
         |-- page.tsx
+    |-- InterviewContent.tsx
     |-- layout.tsx
     |-- page.tsx
 |-- components.json
@@ -42,6 +57,7 @@
 |-- package-lock.json
 |-- package.json
 |-- postcss.config.mjs
+|-- prism.css
 |-- public
     |-- company-data
         |-- Accenture
@@ -1544,4 +1560,3 @@
     |-- parseCsv.ts
     |-- parseResponse.ts
     |-- types.ts
-|-- vercel.json

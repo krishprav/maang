@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { Navigation } from './components/Navigation';
+import ChatBot from "./components/ChatBot";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -58,8 +60,11 @@ export default function RootLayout({
       <body
         className={`${inter.className} ${jetbrainsMono.className} bg-gradient-to-br from-gray-900 to-gray-950 min-h-screen`}
       >
-        {children}
+        <Navigation />
+        <main className="pt-20 pb-8">{children}</main>
+        <ChatBot />
       </body>
+
     </html>
   );
 }
