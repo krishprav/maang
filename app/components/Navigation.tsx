@@ -32,7 +32,7 @@ export const Navigation: React.FC = () => {
           {[
             { href: "/", icon: FiHome, text: "Home" },
             { href: "/interview-prep", icon: FiBook, text: "Company Specific" },
-            { href: "/code-review", icon: FiGitPullRequest, text: "AI Code-Review" },
+            // { href: "/code-review", icon: FiGitPullRequest, text: "AI Code-Review" },
             { href: "/chat", icon: FiMessageCircle, text: "AI Mentor" },
             { href: "/about", icon: FiInfo, text: "About" },
           ].map((item) => (
