@@ -1,5 +1,5 @@
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-const MODEL = "google/gemini-flash-1.5-8b";
+const MODEL = "google/gemini-2.5-pro-exp-03-25:free";
 
 const createSystemPrompt = (language: string) => `
 You are a senior FAANG engineer conducting a technical interview. Provide a comprehensive solution in ${language} with:
